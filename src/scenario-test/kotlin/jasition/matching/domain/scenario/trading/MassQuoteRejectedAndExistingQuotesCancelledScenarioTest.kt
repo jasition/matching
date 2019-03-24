@@ -14,8 +14,8 @@ import jasition.matching.domain.book.entry.EntrySizes
 import jasition.matching.domain.book.entry.EntryStatus.CANCELLED
 import jasition.matching.domain.book.entry.Side.BUY
 import jasition.matching.domain.book.entry.Side.SELL
+import jasition.matching.domain.quote.QuoteRejectReason.INVALID_BID_ASK_SPREAD
 import jasition.matching.domain.quote.event.MassQuoteCancelledEvent
-import jasition.matching.domain.quote.event.QuoteRejectReason.INVALID_BID_ASK_SPREAD
 
 internal class `Mass quote rejected and existing quotes cancelled` : StringSpec({
     val bookId = aBookId()

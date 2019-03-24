@@ -1,5 +1,6 @@
 package jasition.cqrs
 
+import io.vavr.collection.List
 import io.vavr.collection.Seq
 
 /**
@@ -31,3 +32,6 @@ data class EventId(val value: Long) : Comparable<EventId> {
 
 infix fun <K, A : Aggregate<K>> Seq<Event<K, A>>.play(initial: A): A =
     fold(initial) { aggregate, event -> event.play(aggregate) }
+
+infix fun <K, A : Aggregate<K>> Event<K, A>.playAsTransaction(initial: A): Transaction<K, A> =
+    Transaction(aggregate = play(initial), events = List.of(this))

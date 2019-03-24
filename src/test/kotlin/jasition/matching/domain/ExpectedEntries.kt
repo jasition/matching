@@ -10,10 +10,10 @@ import jasition.matching.domain.order.command.PlaceOrderCommand
 import jasition.matching.domain.order.event.OrderCancelledByExchangeEvent
 import jasition.matching.domain.order.event.OrderPlacedEvent
 import jasition.matching.domain.quote.QuoteEntry
+import jasition.matching.domain.quote.QuoteRejectReason
 import jasition.matching.domain.quote.command.PlaceMassQuoteCommand
 import jasition.matching.domain.quote.event.MassQuotePlacedEvent
 import jasition.matching.domain.quote.event.MassQuoteRejectedEvent
-import jasition.matching.domain.quote.event.QuoteRejectReason
 import jasition.matching.domain.trade.event.TradeSideEntry
 
 fun expectedBookEntry(

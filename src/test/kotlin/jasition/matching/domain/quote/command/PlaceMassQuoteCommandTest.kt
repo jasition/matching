@@ -18,10 +18,10 @@ import jasition.matching.domain.book.entry.SizeAtPrice
 import jasition.matching.domain.book.entry.TimeInForce
 import jasition.matching.domain.book.event.EntryAddedToBookEvent
 import jasition.matching.domain.quote.QuoteModelType
+import jasition.matching.domain.quote.QuoteRejectReason.*
 import jasition.matching.domain.quote.event.MassQuoteCancelledEvent
 import jasition.matching.domain.quote.event.MassQuotePlacedEvent
 import jasition.matching.domain.quote.event.MassQuoteRejectedEvent
-import jasition.matching.domain.quote.event.QuoteRejectReason.*
 import java.time.Instant
 
 internal class PlaceMassQuoteCommandTest : StringSpec({

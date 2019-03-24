@@ -13,11 +13,11 @@ import jasition.matching.domain.book.entry.TimeInForce
 import jasition.matching.domain.client.Client
 import jasition.matching.domain.quote.QuoteEntry
 import jasition.matching.domain.quote.QuoteModelType
+import jasition.matching.domain.quote.QuoteRejectReason
+import jasition.matching.domain.quote.QuoteRejectReason.*
 import jasition.matching.domain.quote.cancelExistingQuotes
 import jasition.matching.domain.quote.event.MassQuotePlacedEvent
 import jasition.matching.domain.quote.event.MassQuoteRejectedEvent
-import jasition.matching.domain.quote.event.QuoteRejectReason
-import jasition.matching.domain.quote.event.QuoteRejectReason.*
 import jasition.matching.domain.trade.matchAndFinalise
 import jasition.monad.appendIfNotNullOrBlank
 import jasition.monad.ifNotEqualsThenUse
@@ -67,18 +67,15 @@ data class PlaceMassQuoteCommand(
                 cancelledEvent.play(aggregate)
             else aggregate
 
-        val rejection = validation.validate(this, cancelledBooks)
-
-        rejection?.run {
+        validation.validate(this, cancelledBooks)?.run {
             return Either.right(Transaction(play(cancelledBooks), events.append(this)))
         }
 
         val placedEvent = toPlacedEvent(cancelledBooks)
-        val placedBooks = placedEvent.play(cancelledBooks)
 
-        val initial = Transaction(placedBooks, events.append(placedEvent))
-
-        return Either.right(placedEvent.toBookEntries().fold(initial) { txn, entry ->
+        return Either.right(placedEvent.toBookEntries().fold(
+            Transaction(placedEvent.play(cancelledBooks), events.append(placedEvent))
+        ) { txn, entry ->
             txn append matchAndFinalise(entry, txn.aggregate)
         })
     }

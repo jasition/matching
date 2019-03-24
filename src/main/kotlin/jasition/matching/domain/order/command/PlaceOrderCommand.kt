@@ -48,10 +48,8 @@ data class PlaceOrderCommand(
     override fun execute(aggregate: Books?): Either<Exception, Transaction<BookId, Books>> {
         if (aggregate == null) return Either.left(BooksNotFoundException("Books ${bookId.bookId} not found"))
 
-        val rejection = validation.validate(this, aggregate)
-
-        rejection?.let {
-            return Either.right(Transaction<BookId, Books>(it.play(aggregate), list(it)))
+        validation.validate(this, aggregate)?.let {
+            return Either.right(it playAsTransaction aggregate)
         }
 
         val placedEvent = toPlacedEvent(books = aggregate, currentTime = whenRequested)

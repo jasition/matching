@@ -10,6 +10,8 @@ import jasition.matching.domain.book.entry.Side
 import jasition.matching.domain.book.entry.SizeAtPrice
 import jasition.matching.domain.book.entry.TimeInForce
 import jasition.matching.domain.quote.QuoteModelType
+import jasition.matching.domain.quote.QuoteRejectReason.DUPLICATE_QUOTE
+import jasition.matching.domain.quote.QuoteRejectReason.EXCHANGE_CLOSED
 import java.time.Instant
 
 
@@ -33,7 +35,7 @@ internal class MassQuoteRejectedEventPropertyTest : StringSpec({
                 offer = SizeAtPrice(size = 5, price = Price(11))
             )
         ),
-        rejectReason = QuoteRejectReason.DUPLICATE_QUOTE,
+        rejectReason = DUPLICATE_QUOTE,
         rejectText = "for some reasons"
     )
     "Has Book ID as Aggregate ID" {
@@ -64,7 +66,7 @@ internal class `Given a mass quote is rejected by an empty book` : StringSpec({
                 offer = SizeAtPrice(size = 5, price = Price(11))
             )
         ),
-        rejectReason = QuoteRejectReason.EXCHANGE_CLOSED,
+        rejectReason = EXCHANGE_CLOSED,
         rejectText = "Exchange closed"
     )
     val result = event.play(books)
@@ -111,7 +113,7 @@ internal class MassQuoteRejectedEventTest : StringSpec({
                 offer = SizeAtPrice(size = 5, price = Price(11))
             )
         ),
-        rejectReason = QuoteRejectReason.EXCHANGE_CLOSED,
+        rejectReason = EXCHANGE_CLOSED,
         rejectText = "Exchange closed"
     )
     val result = event.play(books)
