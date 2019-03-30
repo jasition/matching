@@ -25,7 +25,6 @@ import jasition.matching.domain.quote.event.MassQuoteCancelRejectedEvent
 import jasition.matching.domain.quote.event.MassQuoteCancelledEvent
 import java.time.Instant
 
-
 internal class CancelMassQuoteCommandTest : StringSpec({
     val bookId = aBookId()
     val books = aBooks(bookId)
@@ -96,6 +95,32 @@ internal class CancelMassQuoteCommandTest : StringSpec({
         )
     }
 
+    "Reject if the symbol did not match and the trading status disallows" {
+        command.copy(bookId = BookId("wrong book ID")).execute(
+            books.copy(
+                tradingStatuses = TradingStatuses(
+                    SYSTEM_MAINTENANCE
+                )
+            )
+        ) shouldBe Either.right(
+            Transaction<BookId, Books>(
+                aggregate = books
+                    .ofEventId(EventId(1))
+                    .copy(tradingStatuses = TradingStatuses(SYSTEM_MAINTENANCE)),
+                events = list(
+                    MassQuoteCancelRejectedEvent(
+                        bookId = bookId,
+                        eventId = EventId(1),
+                        whoRequested = command.whoRequested,
+                        whenHappened = command.whenRequested,
+                        rejectReason = OTHER,
+                        rejectText = "Unknown book ID : wrong book ID; Placing mass quote is currently not allowed : SYSTEM_MAINTENANCE"
+                    )
+                )
+            )
+        )
+    }
+
     "Reject if the no quote was found" {
         command.execute(books) shouldBe Either.right(
             Transaction<BookId, Books>(
@@ -154,5 +179,4 @@ internal class CancelMassQuoteCommandTest : StringSpec({
             )
         )
     }
-
 })
