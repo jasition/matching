@@ -25,4 +25,16 @@ internal class PlayEventsTest : StringSpec({
 
         events play aggregate1 shouldBe finalAggregate
     }
+    "Event is played as transaction" {
+        val aggregate1 = TestAggregate()
+        val finalAggregate = TestAggregate()
+        val event1 = spyk(TestEvent(eventId = EventId(1)))
+
+        every { event1.play(aggregate1) } returns finalAggregate
+
+        event1 playAsTransaction aggregate1 shouldBe Transaction<Int, TestAggregate>(
+            aggregate = finalAggregate,
+            events = list(event1)
+        )
+    }
 })

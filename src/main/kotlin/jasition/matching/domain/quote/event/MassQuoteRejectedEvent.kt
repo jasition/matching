@@ -10,6 +10,7 @@ import jasition.matching.domain.book.verifyEventId
 import jasition.matching.domain.client.Client
 import jasition.matching.domain.quote.QuoteEntry
 import jasition.matching.domain.quote.QuoteModelType
+import jasition.matching.domain.quote.QuoteRejectReason
 import jasition.matching.domain.quote.cancelExistingQuotes
 import java.time.Instant
 
@@ -43,13 +44,3 @@ data class MassQuoteRejectedEvent(
     }
 }
 
-enum class QuoteRejectReason {
-    UNKNOWN_SYMBOL,
-    EXCHANGE_CLOSED,
-    DUPLICATE_QUOTE,
-    INVALID_BID_ASK_SPREAD,
-    INVALID_PRICE,
-    INVALID_QUANTITY,
-    NOT_AUTHORISED,
-    OTHER
-}
