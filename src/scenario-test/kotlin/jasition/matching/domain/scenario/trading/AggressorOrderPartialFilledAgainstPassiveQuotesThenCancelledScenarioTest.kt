@@ -165,7 +165,7 @@ internal class `Aggressor order partial filled against passive quotes then cance
                         )
                     )
                 }).append(
-                    expectedOrderCancelledByExchangeEvent(
+                    expectedOrderCancelledEvent(
                         bookId = bookId,
                         eventId = ++eventId,
                         entry = lastNewBookEntry

@@ -6,6 +6,7 @@ import io.kotlintest.specs.StringSpec
 import io.kotlintest.tables.row
 import io.mockk.mockk
 import jasition.matching.domain.book.TradingStatus.*
+import jasition.matching.domain.order.command.CancelOrderCommand
 import jasition.matching.domain.order.command.PlaceOrderCommand
 import jasition.matching.domain.quote.command.CancelMassQuoteCommand
 import jasition.matching.domain.quote.command.PlaceMassQuoteCommand
@@ -71,6 +72,17 @@ internal class TradingStatusTest : StringSpec({
     ) { tradingStatus, allowed ->
         "$tradingStatus ${if (allowed) "" else "dis"}allows CancelMassQuoteCommand"{
             tradingStatus.allows(mockk<CancelMassQuoteCommand>()) shouldBe allowed
+        }
+    }
+    forall(
+        row(OPEN_FOR_TRADING, true),
+        row(HALTED, true),
+        row(NOT_AVAILABLE_FOR_TRADING, true),
+        row(PRE_OPEN, true),
+        row(SYSTEM_MAINTENANCE, false)
+    ) { tradingStatus, allowed ->
+        "$tradingStatus ${if (allowed) "" else "dis"}allows CancelOrderCommand"{
+            tradingStatus.allows(mockk<CancelOrderCommand>()) shouldBe allowed
         }
     }
 })

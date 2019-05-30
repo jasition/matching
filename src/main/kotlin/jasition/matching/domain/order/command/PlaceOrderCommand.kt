@@ -52,7 +52,7 @@ data class PlaceOrderCommand(
             return Either.right(it playAsTransaction aggregate)
         }
 
-        val placedEvent = toPlacedEvent(books = aggregate, currentTime = whenRequested)
+        val placedEvent = toPlacedEvent(aggregate)
         val placedAggregate = placedEvent.play(aggregate)
 
         return Either.right(
@@ -61,10 +61,7 @@ data class PlaceOrderCommand(
         )
     }
 
-    private fun toPlacedEvent(
-        books: Books,
-        currentTime: Instant = Instant.now()
-    ): OrderPlacedEvent = OrderPlacedEvent(
+    private fun toPlacedEvent(books: Books): OrderPlacedEvent = OrderPlacedEvent(
         eventId = books.lastEventId.inc(),
         requestId = requestId,
         whoRequested = whoRequested,
@@ -78,7 +75,7 @@ data class PlaceOrderCommand(
         ),
         price = price,
         timeInForce = timeInForce,
-        whenHappened = currentTime
+        whenHappened = whenRequested
     )
 
     private fun toRejectedEvent(

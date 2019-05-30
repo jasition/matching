@@ -9,7 +9,8 @@ import jasition.cqrs.EventId
 import jasition.matching.domain.aBookEntry
 import jasition.matching.domain.aBookId
 import jasition.matching.domain.anEventId
-import jasition.matching.domain.order.event.OrderCancelledByExchangeEvent
+import jasition.matching.domain.order.event.OrderCancelReason
+import jasition.matching.domain.order.event.OrderCancelledEvent
 import jasition.matching.domain.randomPrice
 import jasition.matching.domain.trade.event.TradeSideEntry
 import java.time.Instant
@@ -43,12 +44,14 @@ internal class BookEntryTest : StringSpec({
             status = EntryStatus.PARTIAL_FILL
         )
     }
-    "Converts to OrderCancelledByExchangeEvent" {
+    "Converts to OrderCancelledEvent" {
         val eventId = anEventId()
         val bookId = aBookId()
         val whenHappened = Instant.now()
-        entry.toOrderCancelledByExchangeEvent(eventId = eventId,
-            bookId = bookId, whenHappened = whenHappened) shouldBe OrderCancelledByExchangeEvent(
+        entry.toOrderCancelledEvent(eventId = eventId,
+            bookId = bookId,
+            whenHappened = whenHappened,
+            reason = OrderCancelReason.CANCELLED_UPON_REQUEST) shouldBe OrderCancelledEvent(
             bookId = bookId,
             requestId = entry.requestId,
             whoRequested = entry.whoRequested,
@@ -59,7 +62,8 @@ internal class BookEntryTest : StringSpec({
             timeInForce = entry.timeInForce,
             whenHappened = whenHappened,
             eventId = eventId,
-            status = EntryStatus.CANCELLED
+            status = EntryStatus.CANCELLED,
+            reason = OrderCancelReason.CANCELLED_UPON_REQUEST
         )
     }
     "Updates sizes and status when traded" {

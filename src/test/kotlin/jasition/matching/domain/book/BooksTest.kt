@@ -87,6 +87,26 @@ internal class BooksTest : StringSpec({
                 Predicate { sellEntry.whoRequested == it.whoRequested }
             ) shouldBe list(buyEntry, sellEntry)
     }
+    "Able to find the entries fulfilling the predicate on the BUY side" {
+        Books(aBookId())
+            .addBookEntry(buyEntry)
+            .addBookEntry(sellEntry)
+            .addBookEntry(excludedEntry)
+            .findBookEntries(
+                predicate = Predicate { buyEntry.whoRequested == it.whoRequested },
+                side = Side.BUY
+            ) shouldBe list(buyEntry)
+    }
+    "Able to find the entries fulfilling the predicate on the SELL side" {
+        Books(aBookId())
+            .addBookEntry(buyEntry)
+            .addBookEntry(sellEntry)
+            .addBookEntry(excludedEntry)
+            .findBookEntries(
+                predicate = Predicate { sellEntry.whoRequested == it.whoRequested },
+                side = Side.SELL
+            ) shouldBe list(sellEntry)
+    }
     "Updating BUY does not affect SELL side" {
         Books(aBookId())
             .addBookEntry(buyEntry)

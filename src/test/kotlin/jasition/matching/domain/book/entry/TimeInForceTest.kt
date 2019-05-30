@@ -100,7 +100,7 @@ internal class TimeInForceTest : StringSpec({
         IMMEDIATE_OR_CANCEL.finalise(originalAggressor, books, result) shouldBe Transaction(
             aggregate = books.copy(lastEventId = books.lastEventId.inc()),
             events = existingEvents.append(
-                expectedOrderCancelledByExchangeEvent(
+                expectedOrderCancelledEvent(
                     entry = aggressor,
                     eventId = books.lastEventId.inc(), bookId = books.bookId
                 )
@@ -123,7 +123,7 @@ internal class TimeInForceTest : StringSpec({
         FILL_OR_KILL.finalise(originalAggressor, books, result) shouldBe Transaction(
             aggregate = books.copy(lastEventId = books.lastEventId.inc()),
             events = list<Event<BookId, Books>>(
-                expectedOrderCancelledByExchangeEvent(
+                expectedOrderCancelledEvent(
                     entry = originalAggressor,
                     eventId = books.lastEventId.inc(), bookId = books.bookId
                 )

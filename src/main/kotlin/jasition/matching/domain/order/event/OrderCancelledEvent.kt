@@ -8,10 +8,11 @@ import jasition.matching.domain.book.entry.*
 import jasition.matching.domain.book.verifyEventId
 import jasition.matching.domain.client.Client
 import jasition.matching.domain.client.ClientRequestId
+import jasition.matching.domain.client.requestLinksToOriginal
 import java.time.Instant
 import java.util.function.Predicate
 
-data class OrderCancelledByExchangeEvent(
+data class OrderCancelledEvent(
     val eventId: EventId,
     val requestId: ClientRequestId,
     val whoRequested: Client,
@@ -22,7 +23,8 @@ data class OrderCancelledByExchangeEvent(
     val price: Price?,
     val timeInForce: TimeInForce,
     val status: EntryStatus,
-    val whenHappened: Instant
+    val whenHappened: Instant,
+    val reason: OrderCancelReason
 ) : Event<BookId, Books> {
     override fun aggregateId(): BookId = bookId
     override fun eventId(): EventId = eventId
@@ -32,6 +34,11 @@ data class OrderCancelledByExchangeEvent(
             side = side,
             predicate = Predicate {
                 it.whoRequested == whoRequested
-                        && (it.requestId.current == requestId.current)
+                        && requestLinksToOriginal(original = it.requestId, new = requestId)
             })
+}
+
+enum class OrderCancelReason {
+    CANCELLED_UPON_REQUEST,
+    CANCELLED_BY_EXCHANGE
 }

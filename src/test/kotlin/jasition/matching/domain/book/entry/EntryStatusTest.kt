@@ -16,6 +16,9 @@ internal class EntryStatusTest : StringSpec({
     "CANCELLED Status is final" {
         EntryStatus.CANCELLED.isFinal() shouldBe true
     }
+    "REJECTED Status is final" {
+        EntryStatus.REJECTED.isFinal() shouldBe true
+    }
     "Positive available sizes is partial fill"{
         EntryStatus.PARTIAL_FILL.traded(
             EntrySizes(

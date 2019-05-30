@@ -79,6 +79,9 @@ data class Books(
                 )
         )
 
+    fun findBookEntries(predicate: Predicate<BookEntry>, side: Side): List<BookEntry> =
+        List.ofAll(side.sameSideBook(this).entries.filterValues(predicate).values())
+
     fun ofEventId(eventId: EventId): Books = copy(lastEventId = verifyEventId(eventId))
 }
 
