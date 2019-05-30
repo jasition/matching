@@ -99,7 +99,7 @@ internal class `Aggressor order partial filled against passive quotes then rever
             with(result) {
                 events shouldBe List.of<Event<BookId, Books>>(
                     expectedOrderPlacedEvent(command, orderPlacedEventId),
-                    expectedOrderCancelledByExchangeEvent(
+                    expectedOrderCancelledEvent(
                         bookId = bookId,
                         eventId = ++eventId,
                         entry = expectedAggressorBookEntry

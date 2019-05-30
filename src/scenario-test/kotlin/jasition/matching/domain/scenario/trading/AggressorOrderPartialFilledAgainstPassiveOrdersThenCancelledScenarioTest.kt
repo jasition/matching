@@ -191,7 +191,7 @@ internal class `Aggressor order partial filled against passive orders then cance
                         )
                     )
                 }).append(
-                    expectedOrderCancelledByExchangeEvent(
+                    expectedOrderCancelledEvent(
                         bookId = bookId,
                         eventId = ++eventId,
                         entry = lastNewBookEntry

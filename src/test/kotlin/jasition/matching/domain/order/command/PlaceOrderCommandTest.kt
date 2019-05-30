@@ -107,7 +107,7 @@ internal class PlaceOrderCommandTest : StringSpec({
                 ),
                 events = list(
                     orderPlacedEvent,
-                    expectedOrderCancelledByExchangeEvent(
+                    expectedOrderCancelledEvent(
                         bookId = bookId,
                         eventId = EventId(2),
                         entry = orderPlacedEvent.toBookEntry()

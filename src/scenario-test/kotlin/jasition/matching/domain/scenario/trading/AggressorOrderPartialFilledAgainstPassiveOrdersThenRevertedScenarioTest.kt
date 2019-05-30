@@ -128,7 +128,7 @@ internal class `Aggressor order partial filled against passive orders then trade
             with(result) {
                 events shouldBe List.of<Event<BookId, Books>>(
                     expectedOrderPlacedEvent(command, orderPlacedEventId),
-                    expectedOrderCancelledByExchangeEvent(
+                    expectedOrderCancelledEvent(
                         bookId = bookId,
                         eventId = ++eventId,
                         entry = expectedAggressorBookEntry

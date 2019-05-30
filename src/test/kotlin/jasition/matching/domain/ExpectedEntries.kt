@@ -7,7 +7,8 @@ import jasition.matching.domain.book.entry.EntryStatus.CANCELLED
 import jasition.matching.domain.book.entry.EntryStatus.NEW
 import jasition.matching.domain.client.ClientRequestId
 import jasition.matching.domain.order.command.PlaceOrderCommand
-import jasition.matching.domain.order.event.OrderCancelledByExchangeEvent
+import jasition.matching.domain.order.event.OrderCancelReason
+import jasition.matching.domain.order.event.OrderCancelledEvent
 import jasition.matching.domain.order.event.OrderPlacedEvent
 import jasition.matching.domain.quote.QuoteEntry
 import jasition.matching.domain.quote.QuoteRejectReason
@@ -208,14 +209,15 @@ fun expectedTradeSideEntry(
     )
 }
 
-fun expectedOrderCancelledByExchangeEvent(
+fun expectedOrderCancelledEvent(
     entry: BookEntry,
     eventId: EventId,
     bookId: BookId,
     tradedSize: Int = entry.sizes.traded,
-    cancelledSize: Int = entry.sizes.available + entry.sizes.cancelled
-): OrderCancelledByExchangeEvent {
-    return OrderCancelledByExchangeEvent(
+    cancelledSize: Int = entry.sizes.available + entry.sizes.cancelled,
+    reason: OrderCancelReason = OrderCancelReason.CANCELLED_BY_EXCHANGE
+): OrderCancelledEvent {
+    return OrderCancelledEvent(
         eventId = eventId,
         requestId = entry.requestId,
         whoRequested = entry.whoRequested,
@@ -230,7 +232,8 @@ fun expectedOrderCancelledByExchangeEvent(
         price = entry.key.price,
         timeInForce = entry.timeInForce,
         status = EntryStatus.CANCELLED,
-        whenHappened = entry.key.whenSubmitted
+        whenHappened = entry.key.whenSubmitted,
+        reason = reason
     )
 }
 
@@ -261,7 +264,7 @@ fun expectedOrderPlacedEvent(
     }
 }
 
-fun expectedOrderCancelledByExchangeEvent(
+fun expectedOrderCancelledEvent(
     command: PlaceOrderCommand,
     eventId: EventId,
     sizes: EntrySizes = EntrySizes(
@@ -269,8 +272,8 @@ fun expectedOrderCancelledByExchangeEvent(
         traded = 0,
         cancelled = command.size
     )
-): OrderCancelledByExchangeEvent = with(command) {
-    OrderCancelledByExchangeEvent(
+): OrderCancelledEvent = with(command) {
+    OrderCancelledEvent(
         bookId = bookId,
         eventId = eventId,
         requestId = requestId,
@@ -281,7 +284,8 @@ fun expectedOrderCancelledByExchangeEvent(
         price = price,
         timeInForce = timeInForce,
         status = EntryStatus.CANCELLED,
-        whenHappened = whenRequested
+        whenHappened = whenRequested,
+        reason = OrderCancelReason.CANCELLED_BY_EXCHANGE
     )
 }
 

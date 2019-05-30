@@ -12,6 +12,9 @@ enum class EntryStatus {
     },
     CANCELLED {
         override fun isFinal(): Boolean = true
+    },
+    REJECTED {
+        override fun isFinal(): Boolean = true
     };
 
     abstract fun isFinal(): Boolean;

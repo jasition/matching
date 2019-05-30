@@ -38,7 +38,7 @@ internal class `Order placed on and cancelled from empty book` : StringSpec({
             with(result) {
                 events shouldBe list(
                     expectedOrderPlacedEvent(command, EventId(1)),
-                    expectedOrderCancelledByExchangeEvent(command, EventId(2))
+                    expectedOrderCancelledEvent(command, EventId(2))
                 )
             }
             repo.read(bookId).let {

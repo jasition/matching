@@ -1,5 +1,7 @@
 # Change log
 
+* **2019-05-30 - Cancel Order upon Request**
+* **2019-03-30 - Cancel Quote**
 * **2019-03-07 - Added Market Order**
 * **2019-03-05 - Major CQRS-ES refactor to get rid of recursion and business logic when handling events. Also this has speed up recovery by 10 times from my experiment**
 * **2019-01-21 - Added Immediate-or-cancel time-in-force**

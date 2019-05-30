@@ -6,3 +6,6 @@ data class ClientRequestId(
     val collectionId: String? = null,
     val parentId: String? = null
 )
+
+fun requestLinksToOriginal(original: ClientRequestId, new: ClientRequestId): Boolean =
+    original.current == new.current || original.current == new.original
