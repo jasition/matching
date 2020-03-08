@@ -1,7 +1,7 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.11'
     id 'jacoco' // Code coverage
-    id 'nl.fabianm.kotlin.plugin.generated' version '1.3.0' // Exclude Kotlin generated code in code coverage
+    id 'org.jetbrains.kotlin.jvm' version '1.3.70'
+    id 'nl.fabianm.kotlin.plugin.generated' version '1.5 .0' // Exclude Kotlin generated code in code coverage
     id 'idea'
     id "me.champeau.gradle.jmh" version "0.4.8" // Benchmarking
 }
